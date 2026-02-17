@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Stephen Dietrich-Kolokouris | AI Engineer · Cybersecurity Architect · CCIE</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050709;
+    --dark: #0a0d12;
+    --panel: #0e1318;
+    --border: #1a2530;
+    --cyan: #00d4ff;
+    --cyan-dim: #0099bb;
+    --amber: #ffb347;
+    --red: #ff4444;
+    --text: #c8d8e8;
+    --muted: #566b7d;
+    --mono: 'Share Tech Mono', monospace;
+    --serif: 'Playfair Display', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--sans);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* SCAN LINE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,212,255,0.012) 2px,
+      rgba(0,212,255,0.012) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* GRID BACKGROUND */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 40px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(5,7,9,0.9);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .nav-logo span { color: var(--muted); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--cyan); }
+
+  /* HERO */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 40px 40px;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .hero-bg-accent {
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(ellipse at center, rgba(0,212,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--cyan);
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(42px, 6vw, 78px);
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 8px;
+    font-weight: 900;
+  }
+
+  h1 .accent { color: var(--cyan); }
+
+  .hero-subtitle {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--amber);
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: #8ba0b0;
+    max-width: 580px;
+    line-height: 1.75;
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    background: var(--cyan);
+    color: #000;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  }
+
+  .btn-primary:hover {
+    background: #fff;
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 13px 27px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.2s;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  /* HEADSHOT */
+  .hero-photo-wrapper {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .hero-photo-frame {
+    position: relative;
+    width: 280px;
+    height: 340px;
+  }
+
+  .hero-photo-frame::before {
+    content: '';
+    position: absolute;
+    top: -8px; left: -8px;
+    right: 8px; bottom: 8px;
+    border: 1px solid var(--cyan);
+    opacity: 0.4;
+  }
+
+  .hero-photo-frame::after {
+    content: '';
+    position: absolute;
+    top: 8px; left: 8px;
+    right: -8px; bottom: -8px;
+    border: 1px solid var(--amber);
+    opacity: 0.2;
+  }
+
+  .hero-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: contrast(1.1) brightness(0.9) saturate(0.8);
+    display: block;
+  }
+
+  .photo-badge {
+    position: absolute;
+    bottom: -16px;
+    right: -16px;
+    background: var(--panel);
+    border: 1px solid var(--cyan);
+    padding: 8px 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+
+  /* CLEARANCE STRIP */
+  .clearance-strip {
+    position: relative;
+    z-index: 1;
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 40px;
+    overflow: hidden;
+  }
+
+  .clearance-strip-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .clearance-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .credential-chips {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .chip.highlight {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  .chip.amber {
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 40px;
+  }
+
+  .section-header {
+    margin-bottom: 56px;
+  }
+
+  .section-kicker {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--cyan);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-kicker::before {
+    content: '//';
+    opacity: 0.5;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(32px, 4vw, 52px);
+    color: #fff;
+    line-height: 1.1;
+    font-weight: 700;
+  }
+
+  h2 em { color: var(--cyan); font-style: normal; }
+
+  /* CAPABILITY GRID */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .cap-card {
+    background: var(--panel);
+    padding: 36px 32px;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cap-card:hover {
+    background: #111820;
+  }
+
+  .cap-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--cyan);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .cap-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .cap-icon {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+  }
+
+  .cap-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+
+  .cap-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .cap-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 16px;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.15);
+    color: rgba(0,212,255,0.7);
+  }
+
+  /* SKILLS EVOLUTION TABLE */
+  .evolution-section {
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .evolution-grid {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+
+  .evo-row {
+    display: contents;
+  }
+
+  .evo-col-header {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    background: rgba(0,212,255,0.04);
+    border-bottom: 1px solid var(--border);
+    color: var(--cyan);
+  }
+
+  .evo-arrow-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 0;
+    background: rgba(0,212,255,0.04);
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .evo-left {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+  }
+
+  .evo-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
+    color: var(--cyan);
+    opacity: 0.5;
+    font-size: 16px;
+  }
+
+  .evo-right {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--cyan);
+    display: flex;
+    align-items: center;
+    background: rgba(0,212,255,0.02);
+  }
+
+  /* INTELLIGENCE SECTION */
+  .intel-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .intel-card {
+    border: 1px solid var(--border);
+    padding: 32px;
+    background: var(--panel);
+    position: relative;
+  }
+
+  .intel-card .corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-color: var(--cyan);
+    border-style: solid;
+    opacity: 0.5;
+  }
+
+  .corner.tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+  .corner.tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
+  .corner.bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
+  .corner.br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+  .intel-card h3 {
+    font-family: var(--serif);
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .intel-card p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* PUBLICATIONS */
+  .pub-list {
+    display: grid;
+    gap: 1px;
+    border: 1px solid var(--border);
+    background: var(--border);
+  }
+
+  .pub-item {
+    background: var(--panel);
+    padding: 24px 32px;
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 24px;
+    transition: background 0.2s;
+  }
+
+  .pub-item:hover { background: #111820; }
+
+  .pub-num {
+    font-family: var(--mono);
+    font-size: 32px;
+    color: var(--border);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .pub-title {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+
+  .pub-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .pub-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--cyan), transparent);
+    opacity: 0.3;
+  }
+
+  .tl-item {
+    position: relative;
+    padding-bottom: 36px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -44px;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    background: var(--cyan);
+    border: 1px solid var(--black);
+    outline: 1px solid var(--cyan);
+  }
+
+  .tl-date {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .tl-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .tl-org {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .tl-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 600px;
+  }
+
+  /* CONTACT */
+  #contact {
+    border-top: 1px solid var(--border);
+  }
+
+  .contact-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .contact-heading {
+    font-family: var(--serif);
+    font-size: 40px;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    font-weight: 900;
+  }
+
+  .contact-text {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    text-decoration: none;
+    padding: 14px 20px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+
+  .contact-link:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  .contact-link-icon {
+    width: 24px;
+    color: var(--cyan);
+    opacity: 0.7;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  /* AI ASSISTANT CALLOUT */
+  .ai-callout {
+    border: 1px solid rgba(0,212,255,0.3);
+    background: rgba(0,212,255,0.04);
+    padding: 28px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-callout::before {
+    content: 'AI PORTFOLIO ASSISTANT';
+    position: absolute;
+    top: 12px; right: 16px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--cyan);
+    opacity: 0.4;
+    letter-spacing: 2px;
+  }
+
+  .ai-callout h3 {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .ai-callout p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .ai-callout a {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--cyan);
+    text-decoration: none;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(0,212,255,0.3);
+    padding-bottom: 2px;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--dark);
+  }
+
+  .footer-logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+    margin: 0;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero-content { grid-template-columns: 1fr; }
+    .hero-photo-wrapper { display: none; }
+    .cap-grid { grid-template-columns: 1fr; }
+    .intel-grid { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+    .evolution-grid { grid-template-columns: 1fr 32px 1fr; }
+    .pub-item { grid-template-columns: 48px 1fr; }
+    .pub-badge { display: none; }
+    nav { padding: 0 20px; }
+    .section-inner { padding: 60px 20px; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    background: var(--cyan);
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow { animation: fadeInUp 0.6s ease both; animation-delay: 0.1s; opacity: 0; }
+  h1 { animation: fadeInUp 0.6s ease both; animation-delay: 0.2s; opacity: 0; }
+  .hero-subtitle { animation: fadeInUp 0.6s ease both; animation-delay: 0.3s; opacity: 0; }
+  .hero-desc { animation: fadeInUp 0.6s ease both; animation-delay: 0.4s; opacity: 0; }
+  .hero-ctas { animation: fadeInUp 0.6s ease both; animation-delay: 0.5s; opacity: 0; }
+  .hero-photo-wrapper { animation: fadeInUp 0.7s ease both; animation-delay: 0.3s; opacity: 0; }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SDK<span>::</span>SYSTEMS</div>
+  <ul class="nav-links">
+    <li><a href="#capabilities">Capabilities</a></li>
+    <li><a href="#evolution">Technical Stack</a></li>
+    <li><a href="#intelligence">Intelligence</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-accent"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-eyebrow">CCIE · PhD · Former CIA Contractor · AI Engineer</div>
+      <h1>Dr. Stephen<br><span class="accent">Dietrich-</span><br>Kolokouris</h1>
+      <div class="hero-subtitle">Cybersecurity Architect &nbsp;·&nbsp; AI Engineer &nbsp;·&nbsp; Intelligence Analyst</div>
+      <p class="hero-desc">
+        From SCIF-hardened intelligence operations to production LLM deployment — operating at the intersection of classified threat intelligence, enterprise security architecture, and applied AI engineering. CCIE-certified. PhD-credentialed. Cleared.
+      </p>
+      <div class="hero-ctas">
+        <a href="https://skdietrich.streamlit.app" target="_blank" class="btn-primary">AI Portfolio Assistant →</a>
+        <a href="#capabilities" class="btn-ghost">View Capabilities</a>
+      </div>
+    </div>
+
+    <div class="hero-photo-wrapper">
+      <div class="hero-photo-frame">
+        <img src="headshot.png" alt="Dr. Stephen Dietrich-Kolokouris">
+      </div>
+      <div class="photo-badge">CLEARANCE VERIFIED</div>
+    </div>
+  </div>
+</section>
+
+<!-- CREDENTIAL STRIP -->
+<div class="clearance-strip">
+  <div class="clearance-strip-inner">
+    <div class="clearance-label">Credentials</div>
+    <div class="credential-chips">
+      <div class="chip highlight">CCIE</div>
+      <div class="chip highlight">PhD — Goethe University Frankfurt</div>
+      <div class="chip amber">Former CIA Contractor</div>
+      <div class="chip amber">Security Clearance Holder</div>
+      <div class="chip">7x Published Author</div>
+      <div class="chip">Cisco Global Services</div>
+      <div class="chip">L3Harris Technologies</div>
+      <div class="chip">DHS Research</div>
+    </div>
+  </div>
+</div>
+
+<!-- CAPABILITIES -->
+<section id="capabilities">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-kicker">Core Disciplines</div>
+      <h2>Full-Spectrum <em>Technical Authority</em></h2>
+    </div>
+
+    <div class="cap-grid">
+
+      <div class="cap-card">
+        <div class="cap-icon">[ 01 ] // AI ENGINEERING</div>
+        <div class="cap-title">Production AI Systems</div>
+        <p class="cap-desc">End-to-end RAG pipeline design, LLM application architecture, and multi-agent orchestration. Not theoretical — these are deployed, user-facing systems grounded in real source material with hallucination guardrails and citation tracking.</p>
+        <div class="cap-tags">
+          <span class="tag">LangChain</span>
+          <span class="tag">GPT-4o</span>
+          <span class="tag">RAG Pipelines</span>
+          <span class="tag">ChromaDB / FAISS</span>
+          <span class="tag">Streamlit</span>
+          <span class="tag">Python</span>
+          <span class="tag">Prompt Engineering</span>
+          <span class="tag">Agent Frameworks</span>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-icon">[ 02 ] // CYBERSECURITY</div>
+        <div class="cap-title">Security Architecture & Offense</div>
+        <p class="cap-desc">Zero-trust architecture, OT/SCADA security, red team operations, and incident response. Built compliance programs across NIST RMF, CMMC, NERC CIP, FedRAMP, and FISMA. Can write the firewall rule and the policy that governs it.</p>
+        <div class="cap-tags">
+          <span class="tag">Zero Trust</span>
+          <span class="tag">Pen Testing</span>
+          <span class="tag">NIST RMF</span>
+          <span class="tag">CMMC</span>
+          <span class="tag">Red Team</span>
+          <span class="tag">NERC CIP</span>
+          <span class="tag">IR & Forensics</span>
+          <span class="tag">Supply Chain</span>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-icon">[ 03 ] // NETWORK ENGINEERING</div>
+        <div class="cap-title">CCIE-Level Infrastructure</div>
+        <p class="cap-desc">Elite network engineering applied to classified government networks, defense contractor environments, and critical infrastructure. From BGP multi-homed design to SD-WAN overlays and cloud-native networking across AWS and Azure.</p>
+        <div class="cap-tags">
+          <span class="tag">BGP / OSPF / EIGRP</span>
+          <span class="tag">SD-WAN</span>
+          <span class="tag">AWS VPC</span>
+          <span class="tag">Azure Networking</span>
+          <span class="tag">Cisco Firepower</span>
+          <span class="tag">802.1X NAC</span>
+          <span class="tag">IPsec / FlexVPN</span>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-icon">[ 04 ] // INTELLIGENCE OPERATIONS</div>
+        <div class="cap-title">CIA Contractor — CT Operations</div>
+        <p class="cap-desc">Counterterrorism intelligence operations during active Al-Qaeda and ISIS threat periods. Structured Analytical Techniques, compartmentalized operations, SCIF-level protocols. Tradecraft now applied to cyber threat analysis and adversary emulation.</p>
+        <div class="cap-tags">
+          <span class="tag">Structured Analytics</span>
+          <span class="tag">OSINT</span>
+          <span class="tag">Threat Intel</span>
+          <span class="tag">OPSEC</span>
+          <span class="tag">Adversary Emulation</span>
+          <span class="tag">Pattern-of-Life</span>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-icon">[ 05 ] // POLICY & GOVERNANCE</div>
+        <div class="cap-title">Security Policy & Compliance</div>
+        <p class="cap-desc">Policy that actually gets implemented. Bridges regulatory requirements with operational reality. Authored security programs for organizations from startup to defense-industrial base. Board-level briefing through SOP authorship.</p>
+        <div class="cap-tags">
+          <span class="tag">NIST CSF</span>
+          <span class="tag">ISO 27001</span>
+          <span class="tag">FISMA</span>
+          <span class="tag">SOC 2</span>
+          <span class="tag">HIPAA</span>
+          <span class="tag">IEC 62443</span>
+          <span class="tag">FedRAMP</span>
+          <span class="tag">GDPR</span>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-icon">[ 06 ] // RESEARCH & STRATEGY</div>
+        <div class="cap-title">Supply Chain & DoD Research</div>
+        <p class="cap-desc">Original research on Chinese firmware-level malware and rare earth element supply chain threats to critical infrastructure. WarSim Algorithm submitted to DoD — quantitative conflict simulation incorporating supply chain variables for strategic planning.</p>
+        <div class="cap-tags">
+          <span class="tag">Supply Chain Risk</span>
+          <span class="tag">Firmware Analysis</span>
+          <span class="tag">REE Risk Scoring</span>
+          <span class="tag">WarSim Algorithm</span>
+          <span class="tag">DoD Submission</span>
+          <span class="tag">DHS Research</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS EVOLUTION -->
+<section id="evolution" class="evolution-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-kicker">Technical Evolution</div>
+      <h2>Legacy Expertise → <em>Modern Equivalents</em></h2>
+    </div>
+
+    <div class="evolution-grid">
+      <div class="evo-col-header">Foundational Skill</div>
+      <div class="evo-arrow-header">→</div>
+      <div class="evo-col-header">Modern Application</div>
+
+      <div class="evo-left">Cisco IOS / IOS-XE CLI administration</div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-right">Intent-based networking (DNA Center) · SD-WAN overlay design · API-driven network automation</div>
+
+      <div class="evo-left">ASA firewall policy & VPN termination</div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-right">Firepower NGFW · Zero-Trust Network Access (ZTNA) · SASE architecture</div>
+
+      <div class="evo-left">Active Directory design & Group Policy</div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-right">Entra ID (Azure AD) · Conditional Access · Identity-first security architecture</div>
+
+      <div class="evo-left">On-prem Windows Server infrastructure</div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-right">Azure hybrid cloud · Intune/Autopilot endpoint management · Microsoft 365 security posture</div>
+
+      <div class="evo-left">Manual SIEM log analysis</div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-right">ML-enhanced UEBA · AI-augmented SOC operations · LLM-powered threat hunting</div>
+
+      <div class="evo-left">Intelligence report writing (CIA tradecraft)</div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-right">Structured threat intelligence reporting · TTPs to MITRE ATT&CK mapping · Executive risk briefings</div>
+
+      <div class="evo-left">Bash / PowerShell system automation</div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-right">Python AI pipelines · LangChain agent frameworks · Infrastructure-as-code (Terraform / Ansible)</div>
+
+      <div class="evo-left">Penetration testing (manual methods)</div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-right">AI-augmented red teaming · Automated attack path analysis · Continuous threat exposure management</div>
+
+      <div class="evo-left">SCIF compartmentalization & OPSEC protocols</div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-right">FedRAMP authorization · CMMC Level 2/3 implementation · Classified cloud (IL4/IL5)</div>
+
+      <div class="evo-left">Hardware lab & physical infrastructure</div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-right">OT/ICS security assessment · Hardware implant threat modeling · Firmware integrity analysis</div>
+    </div>
+  </div>
+</section>
+
+<!-- INTELLIGENCE DIFFERENTIATORS -->
+<section id="intelligence">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-kicker">What Sets This Apart</div>
+      <h2>The <em>Intelligence Advantage</em></h2>
+    </div>
+
+    <div class="intel-grid">
+      <div class="intel-card">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <h3>Intelligence Tradecraft Applied to Cyber</h3>
+        <p>CIA counterterrorism operations build an analytical discipline that most security professionals never develop. Hypothesis testing, alternative analysis, confidence-level assessments, pattern-of-life — these are the methods applied to incident investigation and threat hunting.</p>
+      </div>
+
+      <div class="intel-card">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <h3>The Rare Architect Who Can Troubleshoot</h3>
+        <p>Career built from desktop support through CCIE. When designing a zero-trust architecture or reviewing a cloud deployment, the operational constraints at every layer are understood — not assumed. That makes every architecture decision more real-world viable.</p>
+      </div>
+
+      <div class="intel-card">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <h3>AI Engineering That Solves Business Problems</h3>
+        <p>Production RAG systems grounded in source documents, not hallucinations. Recruiter intent extraction, streaming response delivery, SHA-256 manifest indexing — built and deployed. The LLM applications here solve actual problems, not demonstrate technology.</p>
+      </div>
+
+      <div class="intel-card">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <h3>Defense-Industrial Research at National Scale</h3>
+        <p>Original supply chain vulnerability research on Chinese firmware-level persistence mechanisms and rare earth element dependencies submitted to DoD and DHS contacts. WarSim Algorithm — a quantitative conflict simulation system — submitted to Department of Defense for evaluation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE TIMELINE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-kicker">Professional History</div>
+      <h2>Career <em>Trajectory</em></h2>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">Current</div>
+        <div class="tl-title">AI Engineer · Cybersecurity Consultant · Author</div>
+        <div class="tl-org">StahlTek Consulting · Independent Practice</div>
+        <p class="tl-desc">Production RAG system development, cybersecurity consulting, supply chain vulnerability research, and published authorship across technical and investigative domains.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">Ongoing</div>
+        <div class="tl-title">DHS Research Contributor</div>
+        <div class="tl-org">Department of Homeland Security</div>
+        <p class="tl-desc">Supply chain vulnerability analysis and emergency management simulation. WarSim Algorithm development for strategic conflict simulation submitted to DoD contacts.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">Defense Contractor Era</div>
+        <div class="tl-title">Cybersecurity Engineer</div>
+        <div class="tl-org">L3Harris Technologies</div>
+        <p class="tl-desc">Cybersecurity operations in a classified defense contractor environment. Systems deployment, network security, and endpoint hardening across sensitive operational environments.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">Enterprise Networking</div>
+        <div class="tl-title">Network Engineer (CCIE)</div>
+        <div class="tl-org">Cisco Global Services</div>
+        <p class="tl-desc">CCIE-level network engineering and architecture on networks where downtime has direct operational and safety implications — government, defense contractor, and critical infrastructure.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">Al-Qaeda / ISIS Theater</div>
+        <div class="tl-title">CIA Contractor — Counterterrorism Operations</div>
+        <div class="tl-org">Central Intelligence Agency (Contract)</div>
+        <p class="tl-desc">Intelligence operations support during active CT periods. Compartmentalized environment. Structured analytical techniques, SCIF operations, multi-agency collaboration.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">Academic</div>
+        <div class="tl-title">PhD — History</div>
+        <div class="tl-org">Goethe University Frankfurt · Johann Wolfgang Goethe-Universität</div>
+        <p class="tl-desc">Doctoral research at one of Germany's premier research universities. German language fluency, archival research methodology, and original scholarly publication. Deep familiarity with German business culture and DACH region.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications" style="border-top: 1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-kicker">Published Works</div>
+      <h2>Seven Books. <em>One Methodology.</em></h2>
+    </div>
+
+    <div class="pub-list">
+      <div class="pub-item">
+        <div class="pub-num">01</div>
+        <div>
+          <div class="pub-title">The American Paranormal</div>
+          <div class="pub-meta">Consciousness Studies · Field Investigation · 400pp · Fox 4 Dallas Feature · Halloween 2025</div>
+        </div>
+        <div class="pub-badge">Investigative Research</div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-num">02</div>
+        <div>
+          <div class="pub-title">Chicago Ripper Crew: Reboot</div>
+          <div class="pub-meta">Cold Case Re-Examination · Evidence Re-Evaluation · Witness Testimony Analysis</div>
+        </div>
+        <div class="pub-badge">True Crime</div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-num">03</div>
+        <div>
+          <div class="pub-title">Behind the Mask: Hitler the Socialite</div>
+          <div class="pub-meta">German-Language Primary Sources · Goethe University Archives · Authoritarian Power Analysis</div>
+        </div>
+        <div class="pub-badge">Historical Analysis</div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-num">04</div>
+        <div>
+          <div class="pub-title">Cross & Swastika: Orthodox Europe and the Waffen-SS</div>
+          <div class="pub-meta">Featured in Esquire Magazine Australia · Suppressed WWII History · Orthodox Volunteer Forces</div>
+        </div>
+        <div class="pub-badge">Military History</div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-num">05–07</div>
+        <div>
+          <div class="pub-title">Additional Published Works</div>
+          <div class="pub-meta">Seven books spanning True Crime · Historical Analysis · Investigative Research · Primary Source Methodology</div>
+        </div>
+        <div class="pub-badge">Multiple Genres</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div>
+      <div class="section-kicker" style="margin-bottom: 16px;">Get in Contact</div>
+      <h2 class="contact-heading">Let's Talk<br><em>Scope & Mission.</em></h2>
+      <p class="contact-text">Available for cybersecurity architecture engagements, AI engineering projects, defense research collaboration, executive advisory, and speaking on AI, cyber warfare, and intelligence tradecraft.</p>
+      <div class="contact-links">
+        <a href="https://www.linkedin.com/in/stephen-dietrich-kokokouris-b707b125b/" target="_blank" class="contact-link">
+          <span class="contact-link-icon">in</span>
+          LinkedIn — Stephen Dietrich-Kolokouris
+        </a>
+        <a href="https://skdietrich.streamlit.app" target="_blank" class="contact-link">
+          <span class="contact-link-icon">⟩_</span>
+          AI Portfolio Assistant — skdietrich.streamlit.app
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <div class="ai-callout">
+        <h3>AI Portfolio Assistant</h3>
+        <p>An interactive RAG-powered assistant trained on this portfolio — answers questions about technical background, project history, engagement fit, and availability in real time. Built as a production demonstration of applied AI engineering.</p>
+        <a href="https://skdietrich.streamlit.app" target="_blank">Launch Assistant →</a>
+      </div>
+
+      <div style="margin-top: 24px; border: 1px solid var(--border); padding: 24px 28px;">
+        <div class="section-kicker" style="font-size: 9px; margin-bottom: 10px;">Engagement Areas</div>
+        <div class="credential-chips">
+          <div class="chip highlight">Cybersecurity Architecture</div>
+          <div class="chip highlight">AI Engineering</div>
+          <div class="chip">Red Team / Pen Test</div>
+          <div class="chip">CMMC / FedRAMP</div>
+          <div class="chip">Supply Chain Risk</div>
+          <div class="chip">DoD / Defense</div>
+          <div class="chip amber">Executive Advisory</div>
+          <div class="chip amber">Speaking</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Dr. Stephen Dietrich-Kolokouris · SDK::Systems</div>
+  <div class="footer-copy">CCIE · PhD · Former CIA · AI Engineer · 7x Author</div>
+</footer>
+
+</body>
+</html>
